@@ -1,12 +1,8 @@
 module.exports = async function (guild, song, client, seek, play) {
-  const {
-    Readable: ReadableStream
-  } = require("stream");
+  const { Readable: ReadableStream } = require("stream");
   const Discord = require("discord.js");
   const ytdl = require("ytdl-core");
-  const {
-    streamConfig
-  } = require("../../config.js");
+  const { streamConfig } = require("../../config.js");
   const prism = require("prism-media");
   const queue = client.queue.get(guild.id);
   if (!song) {
@@ -19,8 +15,9 @@ module.exports = async function (guild, song, client, seek, play) {
 
   let input = song.url;
   if (song.type === "ytdl")
-    input = ytdl(song.url, streamConfig.ytdlOptions)
-    .on("error", (err) => console.log(err));
+    input = ytdl(song.url, streamConfig.ytdlOptions).on("error", (err) =>
+      console.log(err)
+    );
 
   const ffmpegArgs = [
     "-analyzeduration",
@@ -33,14 +30,7 @@ module.exports = async function (guild, song, client, seek, play) {
     "48000",
     "-ac",
     "2",
-    "-af",
-    `bass=g=${queue.bass}`,
   ];
-
-  if (queue.nigthCore) {
-    ffmpegArgs.push("-af");
-    ffmpegArgs.push("asetrate=52920");
-  }
 
   const isStream = input instanceof ReadableStream;
 
@@ -73,9 +63,9 @@ module.exports = async function (guild, song, client, seek, play) {
     .setTitle(`${client.messages.startPlaying}**${song.title}**`)
     .setDescription(
       `Song duration: \`${client.funcs.msToTime(
-          queue.songs[0].info.lengthSeconds * 1000,
-          "hh:mm:ss"
-        )}\``
+        queue.songs[0].info.lengthSeconds * 1000,
+        "hh:mm:ss"
+      )}\``
     )
     .setColor(client.config.embedColor);
   queue.textChannel.send(embed);
