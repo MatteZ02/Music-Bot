@@ -10,4 +10,4 @@ npm install (idk how yarn works)
 
 Start with npm start
 
-Be sure to fill out the requiered fields in .ENV_example and rename the file to .ENV
+Be sure to fill out the requiered fields in .env_example and rename the file to .env
