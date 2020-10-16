@@ -2,7 +2,6 @@ require("dotenv/config");
 
 module.exports = {
   token: process.env.TOKEN,
-  api_key: process.env.GOOGLE_API_KEY,
   embedColor: "#b50002",
   prefix: "!",
 };
