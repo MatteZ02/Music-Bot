@@ -1,6 +1,6 @@
 {
   "name": "music-bot",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "A simple discord music bot built from Musix V3.6",
   "main": "./index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/MatteZ02/Music-Bot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.2.1",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "he": "^1.2.0",
@@ -26,8 +26,9 @@
     "prism-media": "^1.2.2",
     "simple-youtube-api": "^5.2.1",
     "utf-8-validate": "^5.0.2",
-    "ytdl-core": "^3.1.0",
-    "ytsr": "^0.1.15",
-    "zlib-sync": "^0.1.6"
+    "ytdl-core": "^3.4.0",
+    "ytpl": "^1.0.1",
+    "ytsr": "^0.1.21",
+    "zlib-sync": "^0.1.7"
   }
 }

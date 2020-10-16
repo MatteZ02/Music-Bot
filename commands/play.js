@@ -1,6 +1,6 @@
-const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
+const ytpl = require("ytpl");
 
 module.exports = {
   name: "play",
@@ -10,7 +10,6 @@ module.exports = {
   category: "music",
   async execute(msg, args, client, Discord, command) {
 
-    const youtube = new YouTube(client.config.api_key);
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
     const queue = client.queue.get(msg.guild.id);
@@ -41,32 +40,38 @@ module.exports = {
       url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)
     ) {
       const lmsg = await msg.channel.send(client.messages.loadingSongs);
-      const playlist = await youtube.getPlaylist(url);
-      const videos = await playlist.getVideos();
-      for (const video of Object.values(videos)) {
-        const video2 = await youtube.getVideoByID(video.id);
-        await client.funcs.handleVideo(
-          video2.url,
-          msg,
-          voiceChannel,
-          client,
-          true,
-          "ytdl"
+      const playlist = await ytpl(url).catch((err) => {
+        msg.channel.send(client.messages.error + err);
+        console.log("Error whilst getting playlist " + err);
+    });
+    if (!playlist || !playlist.items) return msg.channel.send(client.messages.noResults);
+    for (const video of playlist.items) {
+        client.funcs.handleVideo(
+            video.url,
+            msg,
+            voiceChannel,
+            client,
+            true,
+            "ytdl"
         );
-      }
+    }
       const message = client.messages.playlistAdded.replace(
         "%TITLE%",
         playlist.title
       );
       return lmsg.edit(message);
     } else {
-      ytsr(searchString, {
-        limit: 1
-      }, function (err, searchResults) {
-        if (err) console.log(err);
-        if (!searchResults.items[0]) return msg.channel.send(client.messages.noResults);
-        client.funcs.handleVideo(searchResults.items[0].link, msg, voiceChannel, client, false, "ytdl");
-      });
+      if (searchString.length > 127) return msg.channel.send(client.messages.noResults);
+            const res = await ytsr(searchString, {
+                limit: 10
+            }).catch((err) => {
+                msg.channel.send(client.messages.error + err);
+                console.log("Error whilst ytsr" + err);
+            });
+            if (!res || !res.items[0]) return msg.channel.send(client.messages.noResults);
+      const videoResults = res.items.filter(item => item.type == "video");
+      if (!videoResults[0]) return msg.channel.send(client.messages.noResults);
+      client.funcs.handleVideo(videoResults[0].link, msg, voiceChannel, client, false, "ytdl");
     }
   },
 };
