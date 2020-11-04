@@ -18,17 +18,12 @@
   "homepage": "https://github.com/MatteZ02/Music-Bot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.2.1",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.4.1",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
-    "he": "^1.2.0",
-    "ms": "^2.1.2",
     "prism-media": "^1.2.2",
-    "simple-youtube-api": "^5.2.1",
-    "utf-8-validate": "^5.0.2",
-    "ytdl-core": "^3.4.0",
+    "ytdl-core": "^4.0.3",
     "ytpl": "^1.0.1",
-    "ytsr": "^0.1.21",
-    "zlib-sync": "^0.1.7"
+    "ytsr": "^0.1.21"
   }
 }
